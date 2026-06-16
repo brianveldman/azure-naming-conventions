@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Apply theme before paint to avoid flash
+  (function () {
+    const saved = localStorage.getItem("theme");
+    const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>Azure Naming Convention Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container header-row">
+    <div>
+      <h1>☁️ Azure Naming Convention Generator</h1>
+      <p class="subtitle">Generate names following the Azure CAF abbreviations</p>
+    </div>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>1. Select an Azure service</h2>
+    <input type="search" id="search" placeholder="Search for a service… (e.g. storage, vnet, key vault)" autocomplete="off">
+    <div id="resourceList" class="resource-grid"></div>
+  </section>
+
+  <section class="card">
+    <h2>2. Fill in the name components</h2>
+    <div class="form-grid">
+      <label>
+        Workload / application
+        <input type="text" id="workload" placeholder="e.g. payments" value="myapp">
+      </label>
+      <label>
+        Environment
+        <select id="env"></select>
+      </label>
+      <label>
+        Region
+        <select id="region"></select>
+      </label>
+      <label>
+        Instance number
+        <select id="instance">
+          <option value="001">001</option>
+          <option value="002">002</option>
+          <option value="003">003</option>
+          <option value="01">01</option>
+          <option value="02">02</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="">— none —</option>
+        </select>
+      </label>
+      <label>
+        Component order
+        <select id="order">
+          <option value="slug-first">prefix-workload-env-region-nr (CAF)</option>
+          <option value="workload-first">workload-prefix-env-region-nr</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="card result-card">
+    <h2>3. Result</h2>
+    <div id="result" class="result-empty">Select a service above first.</div>
+  </section>
+
+  <section class="card" id="bulkCard">
+    <h2>📋 All resources at once</h2>
+    <p class="hint">Overview of generated names for all services, based on your input above.</p>
+    <button id="toggleBulk" class="btn">Show full overview</button>
+    <div id="bulkTable" class="hidden"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Based on <a href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations" target="_blank" rel="noopener">CAF resource abbreviations</a>
+    and <a href="https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules" target="_blank" rel="noopener">Azure naming rules</a>.
+    <br>
+    Created by <a href="https://www.linkedin.com/in/brian-veldman/" target="_blank" rel="noopener">Brian Veldman</a>.
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
